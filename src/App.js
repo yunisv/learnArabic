@@ -1,24 +1,127 @@
 import logo from './logo.svg';
 import './App.css';
+import {BottomNavigation} from "reactjs-bottom-navigation";
+import {
+  AppstoreOutlined,
+  ContainerOutlined,
+  DesktopOutlined,
+  MailOutlined,
+  MenuFoldOutlined,
+  MenuUnfoldOutlined,
+  PieChartOutlined, UserOutlined,
+} from '@ant-design/icons';
+import {useState} from "react";
+import {Avatar, Button, Card, Divider, Flex, Input, Layout, Menu, Progress, Select, Typography} from "antd";
+import {BrowserView, MobileView} from "react-device-detect";
+import {Content} from "antd/es/layout/layout";
+import {Outlet} from "react-router-dom";
 
-function App() {
+const  bottomNavItems = [
+  {
+    title:  "Home",
+    onClick: ({ id }) =>  alert("menu clicked " + id),
+    icon: <div />, // just for example
+    activeIcon: <div color="#fff" />
+  },
+
+  // items can have either title, icon or both or neither!
+  {
+  },
+  {
+    title:  "Search",
+  },
+  // the render method enables custom item content
+  {
+    render: ({ isActive, id }) =>  isActive ? <strong>{id}</strong> : <span>{id}</span>,
+  },
+];
+
+const App = () => {
+  const { Title } = Typography;
+
+  const items = [
+    {
+      key: '1',
+      icon: <PieChartOutlined />,
+      label: 'Dashboard',
+    },
+    {
+      key: 'sub1',
+      label: 'Challenge',
+      icon: <AppstoreOutlined />,
+      children: [
+        {
+          key: '5',
+          label: 'Russian to Arabic',
+        },
+        {
+          key: '6',
+          label: 'Arabic to Russian',
+        },
+      ],
+    },
+    {
+      key: '3',
+      icon: <ContainerOutlined />,
+      label: 'Dictionary',
+    },
+  ];
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <>
+        <BrowserView style={{display: "flex", width: "100%",
+          height: "100vh",backgroundColor: "#001529",}}>
+          <Layout style={{
+            width: "100%",
+            height: "100%",
+            flexDirection: "row"
+          }}>
+            <Flex style={{
+              width: 256,
+              height: "100%",
+              flexDirection: "column",
+              backgroundColor: "rgb(0, 21, 41)"
+            }}>
+              <Flex
+                  style={{
+                    flexDirection: "column",
+                    backgroundColor: "#001529",
+                    height: "100%",
+                    alignItems: "center"
+                  }}
+              >
+                <Title level={3}>learnArabic</Title>
+                <Menu
+                    defaultSelectedKeys={['1']}
+                    defaultOpenKeys={['sub1']}
+                    mode="inline"
+                    theme="dark"
+                    items={items}
+                />
+              </Flex>
+            </Flex>
+            <Divider style={{height: "100%"}} type={"vertical"} />
+            <Outlet />
+          </Layout>
+        </BrowserView>
+        <MobileView>
+          <Flex style={{
+            width: "100%",
+            height: "100vh",
+            flexDirection: "column",
+            backgroundColor: "rgb(0, 21, 41)"
+          }}>
+            <Outlet />
+            <BottomNavigation
+                items={bottomNavItems}
+                selected={0}
+                onItemClick={(item) =>  console.log(item)}
+                activeBgColor="slateBlue"
+                activeTextColor="white"
+            />
+          </Flex>
+        </MobileView>
+      </>
   );
 }
 

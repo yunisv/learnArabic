@@ -3,11 +3,46 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import {ConfigProvider, theme} from "antd";
+import Dashboard from "./components/Dashboard";
+import RTA from "./components/RTA";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+const router = createBrowserRouter([
+    {
+        path: "/",
+        element: <App />,
+        children: [
+            {
+                path: "/dashboard",
+                element: <Dashboard />
+            },
+            {
+                path: "/rta",
+                element: <RTA />
+            },
+            {
+                path: "/rta/:id",
+                element: <RTA />
+            },
+        ]
+    },
+]);
 root.render(
   <React.StrictMode>
-    <App />
+      <ConfigProvider
+          theme={{
+              token: {
+                  // Seed Token
+                  // colorPrimary: '#00b96b',
+                  borderRadius: 2,
+              },
+              algorithm: theme.darkAlgorithm
+          }}
+      >
+          <RouterProvider router={router} />
+      </ConfigProvider>
   </React.StrictMode>
 );
 
