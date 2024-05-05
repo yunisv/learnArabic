@@ -1,12 +1,88 @@
-import {Avatar, Button, Card, Flex, Input, Layout, Progress, Select, Typography} from "antd";
+import {Avatar, Button, Card, Flex, Form, Input, Layout, Modal, Progress, Select, Typography} from "antd";
 import {UserOutlined} from "@ant-design/icons";
 import {BrowserView, MobileView} from "react-device-detect";
+import {useState} from "react";
+import {useDispatch} from "react-redux";
+import {loginApi} from "../store/reducers/Actions";
 
 const Dashboard = () => {
     const {Title} = Typography
+    const dispatch = useDispatch()
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [passwordVisible, setPasswordVisible] = useState(false);
+    const showModal = () => {
+        setIsModalOpen(true);
+    };
+    const handleOk = () => {
+        setIsModalOpen(false);
+    };
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
   return(
       <>
           <BrowserView style={{height: "100%", width: "100%"}}>
+              <Modal title="Basic Modal" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+                  <Form
+                      name="basic"
+                      labelCol={{
+                          span: 8,
+                      }}
+                      wrapperCol={{
+                          span: 16,
+                      }}
+                      style={{
+                          maxWidth: 600,
+                      }}
+                      initialValues={{
+                          remember: true,
+                      }}
+                      onFinish={(values) => {
+                          dispatch(loginApi({username: values.username, password: values.password}))
+                      }}
+                      onFinishFailed={(errorInfo) => {
+                          console.log('Failed:', errorInfo);
+                      }}
+                      autoComplete="off"
+                  >
+                      <Form.Item
+                          label="Username"
+                          name="username"
+                          rules={[
+                              {
+                                  required: true,
+                                  message: 'Please input your username!',
+                              },
+                          ]}
+                      >
+                          <Input />
+                      </Form.Item>
+
+                      <Form.Item
+                          label="Password"
+                          name="password"
+                          rules={[
+                              {
+                                  required: true,
+                                  message: 'Please input your password!',
+                              },
+                          ]}
+                      >
+                          <Input.Password />
+                      </Form.Item>
+
+                      <Form.Item
+                          wrapperCol={{
+                              offset: 8,
+                              span: 16,
+                          }}
+                      >
+                          <Button type="primary" htmlType="submit">
+                              Submit
+                          </Button>
+                      </Form.Item>
+                  </Form>
+              </Modal>
               <Layout style={{justifyContent: "space-around", alignItems: "center", height: "100%"}}>
                   <Flex style={{
                       width: "90%",
@@ -21,7 +97,9 @@ const Dashboard = () => {
                       <Flex style={{
                           alignItems: "center"
                       }}>
-                          <Avatar size="large" icon={<UserOutlined />} />
+                          <Avatar size="large" icon={<UserOutlined />} onClick={() => {
+                              showModal()
+                          }}/>
                           <Select
                               defaultValue="lucy"
                               style={{
@@ -120,6 +198,7 @@ const Dashboard = () => {
                                   <Flex style={{flexDirection: "column"}}>
                                       <Typography style={{fontSize: 46, fontWeight: "bold"}}>Total progress</Typography>
                                       <Typography style={{fontSize: 20}}>Completed words: 40/102</Typography>
+                                      <Button style={{marginTop: 10}} size={"middle"} type="primary">Reset my progress</Button>
                                   </Flex>
                               </Flex>
                           </Card>

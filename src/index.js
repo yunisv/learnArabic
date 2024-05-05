@@ -7,6 +7,8 @@ import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import {ConfigProvider, theme} from "antd";
 import Dashboard from "./components/Dashboard";
 import RTA from "./components/RTA";
+import {Provider} from "react-redux";
+import store from "./store/store";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const router = createBrowserRouter([
@@ -31,18 +33,20 @@ const router = createBrowserRouter([
 ]);
 root.render(
   <React.StrictMode>
-      <ConfigProvider
-          theme={{
-              token: {
-                  // Seed Token
-                  // colorPrimary: '#00b96b',
-                  borderRadius: 2,
-              },
-              algorithm: theme.darkAlgorithm
-          }}
-      >
-          <RouterProvider router={router} />
-      </ConfigProvider>
+      <Provider store={store}>
+          <ConfigProvider
+              theme={{
+                  token: {
+                      // Seed Token
+                      // colorPrimary: '#00b96b',
+                      borderRadius: 2,
+                  },
+                  algorithm: theme.darkAlgorithm
+              }}
+          >
+              <RouterProvider router={router} />
+          </ConfigProvider>
+      </Provider>
   </React.StrictMode>
 );
 

@@ -14,7 +14,7 @@ import {useState} from "react";
 import {Avatar, Button, Card, Divider, Flex, Input, Layout, Menu, Progress, Select, Typography} from "antd";
 import {BrowserView, MobileView} from "react-device-detect";
 import {Content} from "antd/es/layout/layout";
-import {Outlet} from "react-router-dom";
+import {Link, Outlet} from "react-router-dom";
 
 const  bottomNavItems = [
   {
@@ -43,7 +43,7 @@ const App = () => {
     {
       key: '1',
       icon: <PieChartOutlined />,
-      label: 'Dashboard',
+      label: <Link to={"dashboard/"}>Dashboard</Link>,
     },
     {
       key: 'sub1',
@@ -52,18 +52,18 @@ const App = () => {
       children: [
         {
           key: '5',
-          label: 'Russian to Arabic',
+          label: <Link to={"rta/"}>Russian to Arabic</Link>,
         },
         {
           key: '6',
-          label: 'Arabic to Russian',
+          label: <Link to={"atr/"}>Arabic to Russian</Link>,
         },
       ],
     },
     {
       key: '3',
       icon: <ContainerOutlined />,
-      label: 'Dictionary',
+      label: <Link to={"dictionary/"}>Dictionary</Link>,
     },
   ];
 
